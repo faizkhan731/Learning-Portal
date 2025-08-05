@@ -5,21 +5,23 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 const JWT_SECRET = 'faiz123';
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// MySQL config for async/await
 const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: 'localhost',
+  user: 'root',
+  password: '', // your MySQL password
+  database: 'learning_portal',
 };
 
+// Test database connection on startup
 async function testDatabaseConnection() {
   try {
     const conn = await mysql.createConnection(dbConfig);
@@ -29,13 +31,12 @@ async function testDatabaseConnection() {
     console.error('❌ Database connection failed:', err.message);
     console.log('Please check:');
     console.log('1. MySQL server is running');
-    console.log('2. Database exists');
+    console.log('2. Database "learning_portal" exists');
     console.log('3. Username and password are correct');
-    console.log('4. DB_HOST is reachable (no localhost on Render)');
+    console.log('4. MySQL is running on localhost:3306');
   }
 }
 
-testDatabaseConnection();
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
