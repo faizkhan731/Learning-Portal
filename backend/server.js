@@ -5,6 +5,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 
+
 const app = express();
 const PORT = 5000;
 
@@ -13,11 +14,12 @@ app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// MySQL config for async/await
 const dbConfig = {
-  host: 'localhost',
+host: process.env.DB_HOST,
   user: 'root',
-  password: '', // your MySQL password
+  password: process.env.DB_PASS,
+    database: process.env.learning_portal,
+
   database: 'learning_portal',
 };
 
